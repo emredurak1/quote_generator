@@ -5,7 +5,7 @@ const quoteText = document.querySelector('#quote');
 const authorText = document.querySelector('#author');
 const twitterButton = document.querySelector('.twitter-button');
 const newQuoteButton = document.querySelector('#new-quote');
-const loader = document.querySelector('#loader');
+const loaderElement = document.querySelector('#loader');
 
 let apiQuotes = [];
 
@@ -17,11 +17,11 @@ const newQuote = function () {
   if (quote.text.length >= 120) quoteText.classList.add('long-quote');
   if (!quote.author) authorText.textContent = 'Unknown';
   else authorText.textContent = quote.author;
-  complete();
+  removeLoadingSpinner();
 };
 
 const getQuotes = async function () {
-  loading();
+  showLoadingSpinner();
   const apiUrl = 'https://jacintodesign.github.io/quotes-api/data/quotes.json';
   try {
     const response = await fetch(apiUrl);
@@ -37,18 +37,16 @@ const tweetQuote = function () {
   window.open(twitterUrl, '_blank');
 };
 
-const loading = function () {
-  loader.hidden = false;
+const showLoadingSpinner = function () {
+  loaderElement.hidden = false;
   quoteContainer.hidden = true;
 };
 
-const complete = function () {
+const removeLoadingSpinner = function () {
   quoteContainer.hidden = false;
-  loader.hidden = true;
+  loaderElement.hidden = true;
 };
 
 twitterButton.addEventListener('click', tweetQuote);
-
 newQuoteButton.addEventListener('click', newQuote);
-
 getQuotes();
